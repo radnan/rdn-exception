@@ -1,0 +1,22 @@
+<?php /* @var $this Zend\View\Renderer\PhpRenderer */ ?>
+<?php /* @var $exceptionMessage string */ ?>
+<?php /* @var $displayExceptions bool */ ?>
+<?php /* @var $whoops Whoops\Run */ ?>
+<?php /* @var $exception Exception */ ?>
+<?php /* @var $helpMessage string */ ?>
+
+<?php $this->headTitle('Application error') ?>
+
+<?php if (isset($displayExceptions) && $displayExceptions): ?>
+	<?php $whoops->handleException($exception) ?>
+<?php else: ?>
+	<?php $isPublic = $exception instanceof RdnException\PublicException ?>
+
+	<p <?= !$isPublic ? 'class="alert alert-danger"' : '' ?>>The application has encountered an internal server error.</p>
+
+	<?php if ($isPublic): ?>
+		<p class="alert alert-danger"><?= $exceptionMessage ?></p>
+	<?php endif ?>
+
+	<?= $helpMessage ?>
+<?php endif ?>

@@ -1,0 +1,29 @@
+{
+	"name": "radnan/rdn-exception",
+	"description": "Zend Framework 2 module to normalize errors and exceptions",
+	"keywords": ["zf2", "zend", "exception", "error"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "radnan",
+			"email": "rafiadnan47@gmail.com"
+		}
+	],
+	"require": {
+		"filp/whoops": "1.*",
+		"radnan/rdn-event": "1.*",
+		"radnan/rdn-factory": "1.*",
+		"zendframework/zend-eventmanager": "2.*",
+		"zendframework/zend-http": "2.*",
+		"zendframework/zend-modulemanager": "2.*",
+		"zendframework/zend-mvc": "2.*",
+		"zendframework/zend-servicemanager": "2.*",
+		"zendframework/zend-stdlib": "2.*",
+		"zendframework/zend-view": "2.*"
+	},
+	"autoload": {
+		"psr-0": {
+			"RdnException\\": "src/"
+		}
+	}
+}
