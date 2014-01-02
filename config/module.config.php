@@ -47,8 +47,6 @@ HTML
 	'view_manager' => array(
 		'display_exceptions' => false,
 
-		'exception_template' => 'rdn-exception/error/500',
-
 		'template_path_stack' => array(
 			'RdnException' => dirname(__DIR__) .'/views'
 		),
