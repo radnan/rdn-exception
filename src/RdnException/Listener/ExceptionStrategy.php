@@ -184,7 +184,8 @@ class ExceptionStrategy implements ListenerAggregateInterface
 		}
 
 		$match = $event->getRouteMatch();
-		if ($handler = array_shift($this->whoops->getHandlers()))
+		$handlers = $this->whoops->getHandlers();
+		if ($handler = array_shift($handlers))
 		{
 			$handler->addDataTable('Route match', $match ? $match->getParams() : array());
 		}
