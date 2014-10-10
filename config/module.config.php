@@ -15,7 +15,17 @@ return array(
 
 	'rdn_exception' => array(
 		'messages' => array(
-			'e403' => <<<HTML
+			'e400' => <<<HTML
+<p>
+	Request cannot be fulfilled due to bad syntax.
+</p>
+HTML
+			, 'e401' => <<<HTML
+<p>
+	Authentication is possible but has failed.
+</p>
+HTML
+			, 'e403' => <<<HTML
 <p>
 	You are not authorized to access this page.
 </p>
@@ -25,10 +35,20 @@ HTML
 	The page you're trying to reach doesn't exist.
 </p>
 HTML
+			, 'e422' => <<<HTML
+<p>
+	Request unable to be followed due to semantic errors.
+</p>
+HTML
 			, 'e500' => <<<HTML
 <h2>Report Error</h2>
 <p>
 	Please contact <a href="mailto:email@example.org">email@example.org</a> to report the problem.
+</p>
+HTML
+			, 'e502' => <<<HTML
+<p>
+	Server received an invalid response from upstream server.
 </p>
 HTML
 		),
