@@ -34,8 +34,10 @@ HTML
 		),
 
 		'templates' => array(
+			'e4xx' => 'rdn-exception/error/4xx',
 			'e403' => 'rdn-exception/error/403',
 			'e404' => 'rdn-exception/error/404',
+			'e5xx' => 'rdn-exception/error/5xx',
 			'e500' => 'rdn-exception/error/500',
 		),
 

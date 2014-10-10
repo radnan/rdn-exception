@@ -197,7 +197,15 @@ class ExceptionStrategy implements ListenerAggregateInterface
 			'exception' => $ex,
 			'helpMessage' => $this->messages['e'. $response->getStatusCode()],
 		));
-		$model->setTemplate($this->templates['e'. $response->getStatusCode()]);
+		if (isset($this->templates['e'. $response->getStatusCode()]))
+		{
+			$model->setTemplate($this->templates['e'. $response->getStatusCode()]);
+		}
+		else
+		{
+			$level = intval($response->getStatusCode() / 100);
+			$model->setTemplate($this->templates['e'. $level .'xx']);
+		}
 		$event->setResult($model);
 
 		if ($this->exceptionDisplayed)
