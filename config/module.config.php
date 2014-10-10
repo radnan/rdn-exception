@@ -35,6 +35,11 @@ HTML
 	The page you're trying to reach doesn't exist.
 </p>
 HTML
+			, 'e405' => <<<HTML
+<p>
+	Request method not supported by that resource.
+</p>
+HTML
 			, 'e422' => <<<HTML
 <p>
 	Request unable to be followed due to semantic errors.
