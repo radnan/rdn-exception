@@ -4,8 +4,13 @@ RdnException
 The **RdnException** ZF2 module normalizes all framework errors to use native PHP Exceptions.
 
 Two exception classes to handle HTTP response are included with the module:
-* `RdnException\NotFoundException` - Throwing this exception will result in a **404** response.
 * `RdnException\AccessDeniedException` - Throwing this exception will result in a **403** response.
+* `RdnException\BadGatewayException` - Throwing this exception will result in a **502** response.
+* `RdnException\BadRequestException` - Throwing this exception will result in a **400** response.
+* `RdnException\MethodNotAllowedException` - Throwing this exception will result in a **405** response.
+* `RdnException\NotFoundException` - Throwing this exception will result in a **404** response.
+* `RdnException\UnauthorizedException` - Throwing this exception will result in a **401** response.
+* `RdnException\UnprocessableEntityException` - Throwing this exception will result in a **422** response.
 
 All other exceptions will result in a **500** response.
 
@@ -13,7 +18,24 @@ Additionally a third class `RdnException\PublicException` is included for cases 
 
 ## How to install
 
-This module is still under development
+1. Use `composer` to require the `radnan/rdn-exception` package:
+
+   ~~~bash
+   $ composer require radnan/rdn-exception:1.*
+   ~~~
+
+2. Activate the module by including it in your `application.config.php` file:
+
+   ~~~php
+   <?php
+
+   return array(
+       'modules' => array(
+           'RdnException',
+           // ...
+       ),
+   );
+   ~~~
 
 ## How to use
 
