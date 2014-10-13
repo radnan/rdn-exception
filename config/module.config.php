@@ -65,10 +65,6 @@ HTML
 			'e5xx' => 'rdn-exception/error/5xx',
 			'e500' => 'rdn-exception/error/500',
 		),
-
-		'whoops' => array(
-//			'editor' => 'sublime',
-		),
 	),
 
 	'view_manager' => array(

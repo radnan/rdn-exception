@@ -10,7 +10,6 @@
 		}
 	],
 	"require": {
-		"filp/whoops": "1.*",
 		"radnan/rdn-event": "1.*",
 		"radnan/rdn-factory": "1.*",
 		"zendframework/zend-eventmanager": "2.*",

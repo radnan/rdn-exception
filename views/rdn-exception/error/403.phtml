@@ -1,14 +1,13 @@
 <?php /* @var $this Zend\View\Renderer\PhpRenderer */ ?>
 <?php /* @var $exceptionMessage string */ ?>
 <?php /* @var $displayExceptions boolean */ ?>
-<?php /* @var $whoops Whoops\Run */ ?>
 <?php /* @var $exception Exception */ ?>
 <?php /* @var $helpMessage string */ ?>
 
 <?php $this->headTitle('Access denied') ?>
 
 <?php if ($displayExceptions): ?>
-	<?php $whoops->handleException($exception) ?>
+	<?= $this->render('rdn-exception/error/stack-trace', array('exception' => $exception)) ?>
 <?php else: ?>
 	<p class="alert alert-danger"><?= $exceptionMessage ?></p>
 

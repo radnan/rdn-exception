@@ -3,7 +3,6 @@
 namespace RdnException\Listener;
 
 use RdnException;
-use Whoops\Run;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\Mvc\Application;
@@ -18,11 +17,6 @@ class ExceptionStrategy implements ListenerAggregateInterface
 	 * @var bool
 	 */
 	protected $exceptionDisplayed;
-
-	/**
-	 * @var Run
-	 */
-	protected $whoops;
 
 	/**
 	 * @var array
@@ -53,19 +47,6 @@ class ExceptionStrategy implements ListenerAggregateInterface
 	public function isExceptionDisplayed()
 	{
 		return $this->exceptionDisplayed;
-	}
-
-	public function setWhoops(Run $whoops)
-	{
-		$this->whoops = $whoops;
-	}
-
-	/**
-	 * @return Run
-	 */
-	public function getWhoops()
-	{
-		return $this->whoops;
 	}
 
 	public function setMessages(array $messages = array())
@@ -183,17 +164,9 @@ class ExceptionStrategy implements ListenerAggregateInterface
 			}
 		}
 
-		$match = $event->getRouteMatch();
-		$handlers = $this->whoops->getHandlers();
-		if ($handler = array_shift($handlers))
-		{
-			$handler->addDataTable('Route match', $match ? $match->getParams() : array());
-		}
-
 		$model = new ViewModel(array(
 			'exceptionMessage' => $ex->getMessage(),
 			'displayExceptions' => false,
-			'whoops' => $this->whoops,
 			'exception' => $ex,
 			'helpMessage' => $this->messages['e'. $response->getStatusCode()],
 		));

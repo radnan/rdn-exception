@@ -9,9 +9,7 @@ Two exception classes to handle HTTP response are included with the module:
 
 All other exceptions will result in a **500** response.
 
-Additionally a third class `RdnException\PublicException` is included for cases where you'd like to display the exception message to the user. Both HTTP exceptions extend from this class.
-
-The module uses the [filp/whoops](https://github.com/filp/whoops) library to display the exception, and configurable error messages otherwise.
+Additionally a third class `RdnException\PublicException` is included for cases where you'd like to display the exception message to the user. All HTTP exceptions extend from this class.
 
 ## How to install
 
@@ -53,10 +51,6 @@ HTML
 			'e403' => 'rdn-exception/error/403',
 			'e404' => 'rdn-exception/error/404',
 			'e500' => 'rdn-exception/error/500',
-		),
-
-		'whoops' => array(
-			'editor' => 'sublime',
 		),
 	),
 
