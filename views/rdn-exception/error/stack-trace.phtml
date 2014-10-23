@@ -1,15 +1,18 @@
 <?php /* @var $this Zend\View\Renderer\PhpRenderer */ ?>
 <?php /* @var $exception Exception */ ?>
 
-<style>
+<div>
+
+<style scoped>
 	.stack-trace{
 		background-color: #f3f3f3;
+		padding: 20px;
 		font-family: arial, sans-serif;
 	}
 	.stack-trace .ex-title{
 		background-color: #272727;
 		color: #666;
-		margin: 0;
+		margin: -20px -20px 0;
 		padding: 1em;
 	}
 	.stack-trace .ex-title span:last-of-type{
@@ -20,14 +23,111 @@
 		color: #fff;
 		font-size: 2em;
 		font-weight: normal;
-		margin: 0;
+		margin: 0 -20px 20px;
 		padding: 0 0.5em 0.5em;
 	}
+	.stack-trace .frames{
+		border: 3px solid #cd3f3f;
+		border-radius: 3px;
+		border-width: 2px 0;
+		box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+		margin: 0;
+		padding: 0;
+	}
+	.stack-trace .frames li{
+		background-color: #f9f9f9;
+		border-bottom: 1px solid #ddd;
+		list-style: none;
+		padding: 10px;
+	}
+	.stack-trace .frames .btn-group{
+		text-align: center;
+	}
+	.stack-trace .frames .btn{
+		border-radius: 12px;
+		color: #888;
+		cursor: pointer;
+		display: inline-block;
+		font-size: 12px;
+		font-weight: bold;;
+		margin: 0 5px;
+		padding: 5px 12px;
+	}
+	.stack-trace .frames.app-frames .btn:first-child,
+	.stack-trace .frames:not(.app-frames) .btn:last-child{
+		background-color: #777;
+		color: #fff;
+	}
+	.stack-trace .frames code{
+		color: #666;
+	}
+	.stack-trace .frames.app-frames .is-vendor{
+		display: none;
+	}
 	.stack-trace .hl{
-		color: #2f6193;
+		color: #8c1111;
 	}
 </style>
-<?php do { ?>
+
+	<?php
+
+	$exceptions = array();
+	$lastFrame = false;
+	$lastEndFrame = 0;
+
+	do {
+		$firstFrame = false;
+		foreach ($exception->getTrace() as $i => $frame) {
+			if (!isset($frame['file'])) {
+				continue;
+			}
+
+			$firstFrame = $frame;
+			$lastEndFrame = $i;
+
+			break;
+		}
+
+		$endFrame = count($exception->getTrace());
+		if ($lastFrame) {
+			foreach (array_reverse($exception->getTrace(), true) as $i => $frame) {
+				if ($i > $lastEndFrame) {
+					continue;
+				}
+
+				if (!isset($frame['file'])) {
+					continue;
+				}
+
+				if ($frame['file'] == $lastFrame['file'] && $frame['line'] == $lastFrame['line']) {
+					$endFrame = $i;
+					break;
+				}
+			}
+		}
+
+		$exceptions[] = array(
+			'exception' => $exception,
+			'end_frame' => $endFrame,
+		);
+
+		$lastFrame = array(
+			'file' => $firstFrame['file'],
+			'line' => $firstFrame['line'],
+		);
+		$lastEndFrame = $endFrame;
+
+		$exception = $exception->getPrevious();
+	} while ($exception != null);
+
+	$exceptions = array_reverse($exceptions);
+
+	?>
+
+<?php foreach ($exceptions as $exception): ?>
+	<?php $endFrame = $exception['end_frame'] ?>
+	<?php $exception = $exception['exception'] ?>
+
 	<div class="stack-trace">
 		<h3 class="ex-title">
 			<span><?= implode('</span> \\ <span>', explode('\\', get_class($exception))) ?></span>
@@ -35,25 +135,33 @@
 		</h3>
 		<h2 class="ex-msg"><?= $this->escapeHtml($exception->getMessage()) ?></h2>
 
-		<ol>
+		<ol class="frames app-frames">
 			<li>
-				<p><code><?= $exception->getFile() ?>:<?= $exception->getLine() ?></code></p>
+				<div class="btn-group">
+					<span class="btn" onclick="document.querySelector('.frames').classList.add('app-frames')">Application Frames</span>
+					<span class="btn" onclick="document.querySelector('.frames').classList.remove('app-frames')">All Frames</span>
+				</div>
 			</li>
-			<?php foreach ($exception->getTrace() as $frame): ?>
-				<li>
-					<p>
-						<?php if (isset($frame['class'])): ?>
-							<span class="hl"><?= $frame['class'] ?></span>
-						<?php endif ?>
-						<?= $frame['function'] ?>
-						<?php if (isset($frame['file'])): ?>
-							<br/><code><?= $frame['file'] ?>:<?= $frame['line'] ?></code>
-						<?php endif ?>
-					</p>
+			<li>
+				<code><?= str_replace(getcwd() .'/', '', $exception->getFile()) ?>, line <?= $exception->getLine() ?></code>
+			</li>
+			<?php foreach ($exception->getTrace() as $i => $frame): ?>
+				<?php if ($endFrame !== false && $i === $endFrame) break; ?>
+				<?php $file = isset($frame['file']) ? str_replace(getcwd() .'/', '', $frame['file']) : null ?>
+
+				<li class="<?= substr($file, 0, 7) === 'vendor/' ? 'is-vendor' : 'is-app' ?>">
+					<?php if (isset($frame['class'])): ?>
+						<span class="hl"><?= $frame['class'] ?></span>
+					<?php endif ?>
+					<?= $frame['function'] ?>
+					<?php if (isset($frame['file'])): ?>
+						<code><?= $file ?>, line <?= $frame['line'] ?></code>
+					<?php endif ?>
 				</li>
 			<?php endforeach ?>
 		</ol>
 	</div>
 
-	<?php $exception = $exception->getPrevious() ?>
-<?php } while ($exception != null) ?>
+<?php endforeach ?>
+
+</div>
