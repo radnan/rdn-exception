@@ -73,7 +73,6 @@
 
 	$exceptions = array();
 	$lastFrame = false;
-	$lastEndFrame = 0;
 
 	do {
 		$firstFrame = false;
@@ -83,7 +82,6 @@
 			}
 
 			$firstFrame = $frame;
-			$lastEndFrame = $i;
 
 			break;
 		}
@@ -91,10 +89,6 @@
 		$endFrame = count($exception->getTrace());
 		if ($lastFrame) {
 			foreach (array_reverse($exception->getTrace(), true) as $i => $frame) {
-				if ($i > $lastEndFrame) {
-					continue;
-				}
-
 				if (!isset($frame['file'])) {
 					continue;
 				}
@@ -115,7 +109,6 @@
 			'file' => $firstFrame['file'],
 			'line' => $firstFrame['line'],
 		);
-		$lastEndFrame = $endFrame;
 
 		$exception = $exception->getPrevious();
 	} while ($exception != null);
